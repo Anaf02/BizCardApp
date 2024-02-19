@@ -24,6 +24,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults.shape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -88,23 +90,25 @@ fun BizCard() {
                 ProfileInfo()
 
                 Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Cyan),
+                    shape = RectangleShape,
                     onClick = {
                         showPortfolio.value = !showPortfolio.value
                     }
                 ) {
                     Text("Show Portfolio",
-                        style = MaterialTheme.typography.labelMedium)
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
 
                 Divider(modifier = Modifier.padding(4.dp))
 
                 AnimatedVisibility(visible = showPortfolio.value) {
                     Portfolio(projects = listOf(
-                        "Project 1",
-                        "Project 2",
-                        "Project 3",
-                        "Project 4",
-                        "Project 5"
+                        Project("Project 1", "project 1 description"),
+                        Project("Project 2", "project 2 description"),
+                        Project("Project 3", "project 3 description"),
+                        Project("Project 4", "project 4 description"),
                     ))
                 }
             }
@@ -113,7 +117,7 @@ fun BizCard() {
 }
 
 @Composable
-fun Portfolio(projects: List<String>) {
+fun Portfolio(projects: List<Project>) {
     LazyColumn {
         items(projects) { project ->
             Card(modifier = Modifier
@@ -131,8 +135,8 @@ fun Portfolio(projects: List<String>) {
                         .padding(8.dp)
                         .align(alignment = Alignment.CenterVertically)) {
 
-                        Text(text = project, fontWeight = FontWeight.Bold)
-                        Text(text = "A great Project",
+                        Text(text = project.name, fontWeight = FontWeight.Bold)
+                        Text(text = project.description,
                             style = MaterialTheme.typography.bodyMedium)
                     }
                 }
@@ -143,10 +147,17 @@ fun Portfolio(projects: List<String>) {
 
 @Composable
 fun ProfileInfo() {
-    Column(modifier = Modifier.padding(5.dp)) {
-        Text(text = "Fuma Kotaro", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
-        Text(text = "Android Compose Programmer", modifier = Modifier.padding(3.dp))
-        Text(text = "@nightNinja", modifier = Modifier.padding(3.dp), style = MaterialTheme.typography.titleSmall)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(5.dp),
+        ) {
+
+        Text(text = "Fuma Kotaro", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.error, modifier = Modifier.align(Alignment.CenterHorizontally))
+        Row{
+            Text(text = "Android Compose Programmer", modifier = Modifier.padding(3.dp))
+            Text(text = "@nightNinja", modifier = Modifier.padding(3.dp), style = MaterialTheme.typography.titleSmall)
+        }
+
     }
 }
 
@@ -159,7 +170,7 @@ fun CustomImage(modifier: Modifier = Modifier) {
         shadowElevation = 4.dp
     ) {
 
-        Image(painter = painterResource(id = R.drawable.profile_pic),
+        Image(painter = painterResource(id = R.drawable.robot),
             contentDescription = "profile image",
             modifier = modifier.size(135.dp),
             contentScale = ContentScale.Crop)
